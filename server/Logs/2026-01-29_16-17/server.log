@@ -1,0 +1,3 @@
+[2026-01-29 16:17:03] [33m[warning][0m main.go:18 main.main xxxx
+[2026-01-29 16:17:03] [31m[error][0m main.go:19 main.main yyyy
+[2026-01-29 16:17:03] [36m[info][0m main.go:20 main.main zzzz

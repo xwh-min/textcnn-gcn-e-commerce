@@ -1,0 +1,14 @@
+system:
+  ip:
+  port: 9090
+  env: dev
+log:
+  app: server
+  dir: Logs
+db:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: xwh20040916
+  dbname: service
+  sslmode: disable
