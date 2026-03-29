@@ -1,0 +1,200 @@
+/* 仪表盘页面样式 */
+.dashboard-page {
+  min-height: 100vh;
+  background-color: var(--gray-50);
+}
+
+.dashboard-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .dashboard-container {
+    padding: 1.5rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-container {
+    padding: 1.5rem 2rem;
+  }
+}
+
+.dashboard-header {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+/* 统计卡片网格 */
+.dashboard-stats-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.dashboard-stat-card {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.dashboard-stat-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-stat-value.indigo {
+  color: var(--primary);
+}
+
+.dashboard-stat-value.red {
+  color: #dc2626;
+}
+
+.dashboard-stat-value.yellow {
+  color: #d97706;
+}
+
+.dashboard-stat-change {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+/* 图表卡片 */
+.dashboard-chart-card {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-chart-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+}
+
+.dashboard-chart-placeholder {
+  height: 16rem;
+  background-color: var(--gray-100);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-chart-placeholder p {
+  color: var(--gray-500);
+}
+
+/* 表格卡片 */
+.dashboard-table-card {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.dashboard-table-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+}
+
+.dashboard-table-container {
+  overflow-x: auto;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table thead {
+  background-color: var(--gray-50);
+}
+
+.dashboard-table th {
+  padding: 0.75rem 1.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-table td {
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  white-space: nowrap;
+}
+
+.dashboard-table tbody tr {
+  border-top: 1px solid var(--gray-200);
+}
+
+.dashboard-table tbody tr:hover {
+  background-color: var(--gray-50);
+}
+
+.dashboard-table .enterprise-name {
+  font-weight: 500;
+  color: var(--gray-900);
+}
+
+.dashboard-table .risk-high {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.dashboard-table .risk-medium {
+  color: #d97706;
+  font-weight: 500;
+}
+
+.dashboard-table .risk-low {
+  color: #059669;
+  font-weight: 500;
+}
+
+.dashboard-link {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.dashboard-link:hover {
+  color: var(--primary-dark);
+}

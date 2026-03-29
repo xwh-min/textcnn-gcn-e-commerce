@@ -1,0 +1,342 @@
+/* 风险检测页面样式 */
+.detection-page {
+  min-height: 100vh;
+  background-color: var(--gray-50);
+}
+
+.detection-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .detection-container {
+    padding: 1.5rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .detection-container {
+    padding: 1.5rem 2rem;
+  }
+}
+
+.detection-header {
+  margin-bottom: 1.5rem;
+}
+
+.detection-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.detection-subtitle {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+/* 表单卡片 */
+.detection-form-card {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.detection-form-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+}
+
+.detection-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detection-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detection-form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.detection-form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  color: var(--foreground);
+  transition: all 0.2s;
+}
+
+.detection-form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.detection-form-select {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+.detection-form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.detection-form-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detection-form-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.detection-form-button:disabled {
+  background-color: var(--gray-400);
+  cursor: not-allowed;
+}
+
+/* 错误卡片 */
+.detection-error-card {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detection-error-text {
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+/* 加载中卡片 */
+.detection-loading-card {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.detection-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--gray-200);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 结果卡片 */
+.detection-result-card {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.detection-result-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+}
+
+.detection-result-box {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.detection-result-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.detection-result-icon {
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-size: 1.5rem;
+}
+
+.detection-result-info h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 0.25rem;
+}
+
+.detection-result-info p {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+/* 检测结果各部分 */
+.detection-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.detection-section:last-of-type {
+  border-bottom: none;
+}
+
+.detection-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 0.75rem;
+}
+
+/* 风险评分 */
+.detection-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detection-score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--gray-50);
+  border-radius: var(--radius);
+}
+
+.detection-score-label {
+  font-size: 0.875rem;
+  color: var(--gray-700);
+}
+
+.detection-score-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* 风险等级 */
+.detection-risk-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detection-risk-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--gray-50);
+  border-radius: var(--radius);
+}
+
+.detection-risk-label {
+  font-size: 0.875rem;
+  color: var(--gray-700);
+}
+
+.detection-risk-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+}
+
+/* 操作按钮 */
+.detection-result-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.detection-btn-secondary {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detection-btn-secondary:hover {
+  background-color: var(--gray-50);
+}
+
+.detection-btn-primary {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detection-btn-primary:hover {
+  background-color: var(--primary-dark);
+}
