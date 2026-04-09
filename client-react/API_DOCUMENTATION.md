@@ -5,19 +5,19 @@
 - **基础 URL**: `http://localhost:9090/api`
 - **认证方式**: JWT Token
 - **数据格式**: JSON
-- **CORS**: 已启用（支持跨域请求�?
+- **CORS**: 已启用（支持跨域请求)
 ## 认证说明
 
 ### 获取 Token
 
-除登录和注册接口外，所有接口都需要在请求头中携带 JWT Token�?
+除登录和注册接口外，所有接口都需要在请求头中携带 JWT Token
 ```
 Authorization: Bearer <your_token>
 ```
 
 ### 错误响应格式
 
-所有接口错误统一返回格式�?
+所有接口错误统一返回格式
 ```json
 {
   "code": 400,
@@ -41,9 +41,9 @@ Authorization: Bearer <your_token>
 
 1. [用户认证](#用户认证)
 2. [企业管理](#企业管理)
-3. [物流商管理](#物流商管�?
+3. [物流商管理](#物流商管)
 4. [海关管理](#海关管理)
-5. [图关系管理](#图关系管�?
+5. [图关系管理](#图关系管)
 6. [政策新闻管理](#政策新闻管理)
 7. [用户投诉管理](#用户投诉管理)
 8. [订单管理](#订单管理)
@@ -67,7 +67,7 @@ Authorization: Bearer <your_token>
 **请求参数**:
 ```json
 {
-  "username": "用户�?,
+  "username": "用户",
   "password": "密码",
   "email": "邮箱（可选）",
   "phone": "手机号（可选）"
@@ -91,7 +91,7 @@ Authorization: Bearer <your_token>
 **请求参数**:
 ```json
 {
-  "username": "用户�?,
+  "username": "用户",
   "password": "密码"
 }
 ```
@@ -115,7 +115,7 @@ Authorization: Bearer <your_token>
 
 **接口**: `GET /api/user`
 
-**权限**: 已登录用�?
+**权限**: 已登录用
 **响应示例**:
 ```json
 {
@@ -132,7 +132,7 @@ Authorization: Bearer <your_token>
 
 **接口**: `GET /api/query-history`
 
-**权限**: 已登录用�?
+**权限**: 已登录用
 **响应示例**:
 ```json
 {
