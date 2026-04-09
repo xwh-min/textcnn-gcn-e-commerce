@@ -9,8 +9,8 @@ db:
   host: localhost
   port: 5432
   user: postgres
-  password: xwh20040916
-  dbname: service
+  password: yourpassword
+  dbname: yourname
   sslmode: disable
 onnx:
   model_path: models/model.onnx
