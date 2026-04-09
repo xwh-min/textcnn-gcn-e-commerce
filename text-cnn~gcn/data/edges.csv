@@ -1,0 +1,35 @@
+source,target,type
+customer_1001,product_Clothing,购买
+customer_1001,product_Electronics,购买
+customer_1001,product_Home & Garden,购买
+customer_1001,product_Clothing,购买
+customer_1001,product_Electronics,购买
+customer_1001,product_Electronics,购买
+customer_1001,product_Home & Garden,购买
+customer_1001,product_Clothing,购买
+customer_1001,product_Clothing,购买
+customer_1001,product_Electronics,购买
+customer_1001,product_Electronics,购买
+customer_1001,product_Clothing,购买
+customer_1002,product_Clothing,购买
+customer_1002,product_Home & Garden,购买
+customer_1001,product_Electronics,购买
+customer_1001,product_Clothing,购买
+customer_1001,product_Electronics,购买
+customer_1002,product_Electronics,购买
+customer_1002,product_Home & Garden,购买
+customer_1003,product_Clothing,购买
+customer_1003,product_Electronics,购买
+customer_1004,product_Clothing,购买
+customer_1004,product_Home & Garden,购买
+customer_1005,product_Electronics,购买
+customer_1005,product_Home & Garden,购买
+customer_1001,product_Clothing,购买
+customer_1001,product_Electronics,购买
+customer_1001,product_Home & Garden,购买
+customer_1002,product_Electronics,购买
+customer_1002,product_Clothing,购买
+customer_1002,product_Home & Garden,购买
+customer_1003,product_Electronics,购买
+customer_1003,product_Clothing,购买
+customer_1003,product_Home & Garden,购买

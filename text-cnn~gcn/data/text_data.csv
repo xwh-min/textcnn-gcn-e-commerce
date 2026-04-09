@@ -1,0 +1,51 @@
+text,label
+"Great pair of jeans, very comfortable. Rating: 4 stars.",合规风险
+Great customer service!,合规风险
+Great electronics. The sound quality is excellent. I would highly recommend this product.,合规风险
+"{""Product 1"": {""Rating"": 4, ""Review"": ""Great experience buying this product. Fast delivery and excellent customer service.""}}",合规风险
+"{""Product 1"": {""Rating"": 3, ""Review"": ""Good product, but could have been better.""}}",支付风险
+"{""Product 1"": {""Rating"": 5, ""Review"": ""Awesome product, highly recommend it to everyone.""}}",支付风险
+"{""Product 1"": {""Rating"": 4, ""Review"": ""Great product, will definitely buy again.""}}",合规风险
+"{""Product 1"": {""Rating"": 3, ""Review"": ""Good product, but not worth the price.""}}",支付风险
+"{""Product 1"": {""Rating"": 5, ""Review"": ""Outstanding product, exceeded my expectations.""}}",支付风险
+"{""Product 1"": {""Rating"": 4, ""Review"": ""Good product, but could have been better.""}}",支付风险
+"{""Product 1"": {""Rating"": 3, ""Review"": ""Good product, but not what I expected.""}}",支付风险
+"{""Product 1"": {""Rating"": 4, ""Review"": ""Great product, will definitely buy again.""}}",合规风险
+"{""Review Text"": ""Great quality clothes!"", ""Rating"": 5}",合规风险
+"{""Review Text"": ""Good product, but could be cheaper."", ""Rating"": 3}",支付风险
+"{""Review Text"": ""Very satisfied with my purchase!"", ""Rating"": 5}",支付风险
+"{""Review Text"": ""Not what I expected."", ""Rating"": 2}",支付风险
+"{""Review Text"": ""Excellent product, highly recommend!"", ""Rating"": 5}",合规风险
+"{""Review Text"": ""Awesome purchase!"", ""Rating"": 5}",支付风险
+"{""Review Text"": ""Good product, but not worth the price."", ""Rating"": 3}",支付风险
+"{""Review Text"": ""Great product, highly recommend!"", ""Rating"": 5}",合规风险
+"{""Review Text"": ""Satisfied with my purchase!"", ""Rating"": 4}",支付风险
+"{""Review Text"": ""Excellent product, highly recommend!"", ""Rating"": 5}",合规风险
+"{""Review Text"": ""Good product, but could be better."", ""Rating"": 3}",支付风险
+"{""Review Text"": ""Excellent product, highly recommend!"", ""Rating"": 5}",合规风险
+This dress is amazing! I love the color and fit. 5 stars.,支付风险
+The blouse is so comfortable and stylish. 5 stars!,支付风险
+The headphones are great. Sound quality is excellent. 4.5 stars.,支付风险
+The dress fits perfectly. I love it. 5 stars!,支付风险
+The vacuum cleaner works great. 4 stars.,支付风险
+"The top is nice, but the size is a bit small. 3.5 stars.",支付风险
+The phone is fantastic. 5 stars!,支付风险
+The shirt is comfortable. 4 stars.,支付风险
+The laptop is excellent. 5 stars!,支付风险
+The shoes are comfortable. 4.5 stars.,支付风险
+The coffee maker is great. 5 stars!,支付风险
+The skirt is lovely. 4.5 stars.,支付风险
+The TV is amazing. 5 stars!,支付风险
+The bedding is comfortable. 4 stars.,支付风险
+Great find! 5 stars,合规风险
+"Great product, very happy with my purchase.",合规风险
+The product arrived quickly and in great condition.,支付风险
+"Great headphones, sound quality is amazing.",合规风险
+Great purchase! The shoes are so comfortable and stylish. I've received several compliments.,合规风险
+I'm really happy with my new phone. The battery life is impressive.,支付风险
+The headphones are amazing! The sound quality is excellent.,支付风险
+I love my new kitchen gadget! It's so efficient and easy to use.,支付风险
+The laptop is perfect for my needs. It's lightweight and powerful.,支付风险
+The clothing arrived quickly and fits great! 5 stars.,支付风险
+The electronics were excellent quality and arrived promptly. 5 stars.,支付风险
+The electronics were as described and arrived on time. 4 stars.,支付风险

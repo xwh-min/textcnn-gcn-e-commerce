@@ -1,0 +1,353 @@
+.risks-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 1.5rem;
+}
+
+.risks-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.risks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.risks-header-left {
+  flex: 1;
+}
+
+.risks-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.risks-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.risks-card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+.risks-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .risks-filter-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.risks-search {
+  flex: 1;
+}
+
+.risks-search-container {
+  position: relative;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .risks-search-container {
+    width: auto;
+    min-width: 300px;
+  }
+}
+
+.risks-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.risks-search-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem 0.625rem 2.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #111827;
+  font-size: 0.875rem;
+}
+
+.risks-search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.risks-filter-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-separator {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.risks-filter-date {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #111827;
+  font-size: 0.875rem;
+}
+
+.risks-filter-date:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.risks-filter-select {
+  padding: 0.625rem 2rem 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #111827;
+  font-size: 0.875rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+.risks-filter-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.risks-table-container {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.risks-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.risks-table thead {
+  background-color: #f9fafb;
+}
+
+.risks-table th {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.risks-table td {
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.risks-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.risks-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.risks-table .enterprise-name {
+  font-weight: 600;
+  color: #111827;
+}
+
+.credit-code {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  font-size: 0.9375rem;
+}
+
+.risks-badge {
+  display: inline-flex;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 9999px;
+}
+
+.risk-low {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.risk-medium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.risk-high {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.risk-critical {
+  background-color: #fecaca;
+  color: #7f1d1d;
+}
+
+.risks-link,
+.risks-link-success {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  margin-right: 0.5rem;
+}
+
+.risks-link {
+  color: #3b82f6;
+}
+
+.risks-link:hover {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.risks-link-success {
+  color: #059669;
+}
+
+.risks-link-success:hover {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.risks-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.risks-pagination-info {
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.risks-pagination-info span {
+  font-weight: 600;
+  color: #111827;
+}
+
+.risks-pagination-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.risks-pagination-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.risks-pagination-btn:hover:not(:disabled) {
+  background-color: #f9fafb;
+}
+
+.risks-pagination-btn.active {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.risks-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .risks-page {
+    padding: 1rem;
+  }
+
+  .risks-card {
+    padding: 1.5rem;
+  }
+
+  .risks-title {
+    font-size: 1.5rem;
+  }
+
+  .risks-filter-actions {
+    width: 100%;
+  }
+
+  .date-filter {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .risks-filter-date {
+    width: 100%;
+  }
+
+  .risks-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

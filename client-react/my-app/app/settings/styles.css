@@ -1,0 +1,285 @@
+/* 设置页面样式 - TikTok Shop 风格 */
+.settings-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+  position: relative;
+  padding: 0;
+}
+
+.settings-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(254, 44, 85, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(37, 244, 238, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.settings-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.settings-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.settings-title {
+  font-size: 40px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.settings-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.settings-grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .settings-grid {
+    grid-template-columns: 280px 1fr;
+  }
+  
+  .settings-sidebar {
+    grid-column: span 1;
+  }
+  
+  .settings-content {
+    grid-column: span 1;
+  }
+}
+
+.settings-nav {
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.95));
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  height: fit-content;
+  position: sticky;
+  top: 24px;
+}
+
+.settings-nav-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  letter-spacing: -0.3px;
+}
+
+.settings-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid transparent;
+}
+
+.settings-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.settings-nav-item.active {
+  background: linear-gradient(135deg, rgba(37, 244, 238, 0.15), rgba(26, 213, 209, 0.15));
+  color: #25f4ee;
+  border-color: rgba(37, 244, 238, 0.3);
+  box-shadow: 0 4px 15px rgba(37, 244, 238, 0.2);
+}
+
+.settings-nav-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-form-card {
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.95));
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+}
+
+.settings-form-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 28px;
+  letter-spacing: -0.3px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.3px;
+}
+
+.settings-form-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  color: white;
+  font-size: 15px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.settings-form-input:focus {
+  outline: none;
+  border-color: #25f4ee;
+  background: rgba(37, 244, 238, 0.05);
+  box-shadow: 0 0 0 4px rgba(37, 244, 238, 0.1);
+}
+
+.settings-form-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-form-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  accent-color: #25f4ee;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.settings-form-checkbox:checked {
+  accent-color: #25f4ee;
+}
+
+.settings-form-checkbox-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  cursor: pointer;
+  flex: 1;
+}
+
+.settings-form-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  font-size: 15px;
+  background: linear-gradient(135deg, #fe2c55 0%, #ff4d73 100%);
+  color: white;
+  width: fit-content;
+  box-shadow: 0 4px 20px rgba(254, 44, 85, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.settings-form-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(254, 44, 85, 0.4);
+}
+
+.settings-form-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 24px 16px;
+  }
+  
+  .settings-title {
+    font-size: 28px;
+  }
+  
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .settings-sidebar {
+    grid-column: span 1;
+  }
+  
+  .settings-nav {
+    position: relative;
+    top: 0;
+  }
+  
+  .settings-form-card {
+    padding: 24px;
+  }
+}
