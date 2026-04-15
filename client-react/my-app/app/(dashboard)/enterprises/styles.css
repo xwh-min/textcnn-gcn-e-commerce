@@ -1,0 +1,41 @@
+.enterprises-page{padding:18px;background:#f4f7fb;min-height:100vh}
+.enterprises-title{font-size:28px;font-weight:800;color:#0f172a;margin:0 0 6px}
+.enterprises-subtitle{font-size:13px;color:#64748b}
+.enterprises-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.enterprises-add-btn{height:40px;padding:0 14px;border:none;border-radius:10px;background:linear-gradient(90deg,#0284c7,#0ea5e9);color:#fff;font-weight:700;font-size:13px}
+
+.enterprises-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;box-shadow:0 8px 18px rgba(2,8,23,.05)}
+.enterprises-filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.enterprises-search-input,.enterprises-filter-select{height:38px;padding:0 12px;border:1px solid #cbd5e1;border-radius:10px;font-size:13px;color:#0f172a;background:#fff}
+.enterprises-search-input{min-width:280px}
+.enterprises-search-input:focus,.enterprises-filter-select:focus{outline:none;border-color:#0284c7;box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+
+.enterprises-table-container{overflow-x:auto;border:1px solid #e2e8f0;border-radius:10px}
+.enterprises-table{width:100%;border-collapse:collapse}
+.enterprises-table th{padding:10px;font-size:12px;text-align:left;color:#64748b;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+.enterprises-table td{padding:10px;font-size:13px;color:#334155;border-bottom:1px solid #eef2f7}
+.enterprises-table tr:hover{background:#f8fbff}
+
+.enterprises-link,.enterprises-link-danger{background:none;border:none;padding:0;margin-right:10px;font-size:12px;font-weight:700;cursor:pointer}
+.enterprises-link{color:#0284c7}
+.enterprises-link-danger{color:#b91c1c}
+
+.enterprises-pagination-buttons{display:flex;align-items:center;gap:8px;margin-top:12px}
+.enterprises-pagination-btn{height:34px;padding:0 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;font-size:12px;font-weight:700}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(2,8,23,.35);display:flex;align-items:center;justify-content:center;z-index:999}
+.modal-content{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 16px 40px rgba(2,8,23,.16)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid #e2e8f0}
+.modal-title{font-size:18px;font-weight:800;color:#0f172a}
+.modal-close{border:none;background:#f1f5f9;width:30px;height:30px;border-radius:8px;font-size:16px}
+.modal-form{padding:14px;display:flex;flex-direction:column;gap:10px}
+.form-input{height:38px;padding:0 12px;border:1px solid #cbd5e1;border-radius:10px;font-size:13px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:0 14px 14px}
+.btn-cancel,.btn-primary,.btn-danger{height:36px;padding:0 12px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-cancel{border:1px solid #cbd5e1;background:#fff;color:#0f172a}
+.btn-primary{border:none;background:linear-gradient(90deg,#0284c7,#0ea5e9);color:#fff}
+.btn-danger{border:none;background:#dc2626;color:#fff}
+.delete-error{padding:10px;border-radius:10px;background:#fee2e2;color:#991b1b;font-size:13px}
+.delete-hint{padding:10px;border-radius:10px;background:#fff7ed;color:#9a3412;font-size:13px}
+
+@media (max-width:900px){.enterprises-page{padding:14px}.enterprises-search-input{min-width:100%}}

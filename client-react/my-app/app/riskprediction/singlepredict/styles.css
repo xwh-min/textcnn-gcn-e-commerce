@@ -1,0 +1,490 @@
+/* 风险检测页面样式 - TikTok Shop 风格 */
+.detection-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+  position: relative;
+  padding: 0;
+}
+
+.detection-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(254, 44, 85, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(37, 244, 238, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.detection-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.detection-header {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.detection-title {
+  font-size: 40px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.detection-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* 表单卡片 */
+.detection-form-card {
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.95));
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+}
+
+.detection-form-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 24px;
+  letter-spacing: -0.3px;
+}
+
+.detection-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detection-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detection-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.3px;
+}
+
+.detection-form-input,
+.detection-form-select {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  color: white;
+  font-size: 15px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.detection-form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.detection-form-input:focus,
+.detection-form-select:focus {
+  outline: none;
+  border-color: #25f4ee;
+  background: rgba(37, 244, 238, 0.05);
+  box-shadow: 0 0 0 4px rgba(37, 244, 238, 0.1);
+}
+
+.detection-form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2325f4ee' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  cursor: pointer;
+}
+
+.detection-form-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fe2c55 0%, #ff4d73 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(254, 44, 85, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.detection-form-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(254, 44, 85, 0.4);
+}
+
+.detection-form-button:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 错误卡片 */
+.detection-error-card {
+  background: rgba(254, 44, 85, 0.1);
+  border: 1px solid rgba(254, 44, 85, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.detection-error-text {
+  color: #fe2c55;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 加载中卡片 */
+.detection-loading-card {
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.95));
+  border-radius: 20px;
+  padding: 48px;
+  margin-bottom: 32px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detection-loading-spinner {
+  width: 56px;
+  height: 56px;
+  border: 3px solid rgba(37, 244, 238, 0.2);
+  border-top: 3px solid #25f4ee;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.detection-loading-card p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.loading-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 8px;
+}
+
+/* 标签页 */
+.detection-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: fit-content;
+}
+
+.detection-tab {
+  padding: 12px 28px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.detection-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.detection-tab.active {
+  background: linear-gradient(135deg, #25f4ee, #1ad5d1);
+  color: white;
+  box-shadow: 0 4px 15px rgba(37, 244, 238, 0.3);
+}
+
+/* 结果卡片 */
+.detection-result-card,
+.detection-analysis-card {
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.95));
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+}
+
+.detection-result-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 24px;
+  letter-spacing: -0.3px;
+}
+
+.detection-result-box {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.detection-result-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detection-result-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(37, 244, 238, 0.2), rgba(26, 213, 209, 0.2));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  font-size: 32px;
+  border: 1px solid rgba(37, 244, 238, 0.3);
+}
+
+.detection-result-info h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.detection-result-info p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* 检测结果各部分 */
+.detection-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detection-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.detection-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+
+/* 风险评分 */
+.detection-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detection-score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.detection-score-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.detection-score-value {
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #25f4ee, #1ad5d1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  min-width: 80px;
+  text-align: right;
+}
+
+/* 风险等级 */
+.detection-risk-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detection-risk-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.detection-risk-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.detection-risk-badge {
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+/* 操作按钮 */
+.detection-result-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detection-btn-secondary {
+  padding: 12px 24px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.detection-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.detection-btn-primary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fe2c55 0%, #ff4d73 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(254, 44, 85, 0.3);
+}
+
+.detection-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(254, 44, 85, 0.4);
+}
+
+/* 风险评分条 */
+.detection-score-bar {
+  flex: 1;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0 16px;
+}
+
+.detection-score-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+/* 风险因素标签 */
+.detection-risk-factors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.risk-factor-tag {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+  color: #fbbf24;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .detection-container {
+    padding: 24px 16px;
+  }
+  
+  .detection-title {
+    font-size: 28px;
+  }
+  
+  .detection-form-card,
+  .detection-result-card,
+  .detection-analysis-card {
+    padding: 24px;
+  }
+  
+  .detection-tabs {
+    width: 100%;
+  }
+  
+  .detection-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 16px;
+  }
+}

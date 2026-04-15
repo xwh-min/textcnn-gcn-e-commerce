@@ -1,0 +1,37 @@
+/* 首页样式 - 跨境电商SaaS风格 */
+.home-page{min-height:100vh;background:#f4f7fb;color:#0f172a}
+.home-nav{background:#fff;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:10}
+.home-nav-container{max-width:1280px;margin:0 auto;padding:12px 18px}
+.home-nav-content{display:flex;justify-content:space-between;align-items:center}
+.home-nav-brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:#0f172a}
+.home-nav-logo{font-size:22px}
+.home-nav-link-primary{height:38px;padding:0 14px;border:none;border-radius:10px;background:linear-gradient(90deg,#0284c7,#0ea5e9);color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+
+.home-hero{padding:56px 18px 30px}
+.home-hero-content{max-width:1100px;margin:0 auto;text-align:center}
+.home-hero-title{font-size:44px;line-height:1.18;margin:0 0 14px;color:#0f172a;font-weight:800}
+.home-hero-description{max-width:760px;margin:0 auto 26px;color:#64748b;font-size:17px;line-height:1.8}
+
+.home-hero-buttons{display:flex;justify-content:center;gap:10px;margin-bottom:30px}
+.home-hero-btn-primary,.home-hero-btn-secondary{height:44px;padding:0 20px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer}
+.home-hero-btn-primary{border:none;background:linear-gradient(90deg,#0284c7,#0ea5e9);color:#fff}
+.home-hero-btn-secondary{border:1px solid #bae6fd;background:#f0f9ff;color:#0369a1}
+
+.home-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.home-feature-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 8px 18px rgba(2,8,23,.05);transition:.2s}
+.home-feature-card:hover{transform:translateY(-3px);box-shadow:0 12px 22px rgba(2,8,23,.08)}
+.home-feature-icon{font-size:30px;margin-bottom:10px}
+.home-feature-title{font-size:18px;font-weight:800;color:#0f172a;margin:0 0 6px}
+.home-feature-desc{font-size:13px;color:#64748b;line-height:1.7}
+
+.home-footer{padding:20px 18px;border-top:1px solid #e2e8f0;margin-top:34px;background:#fff}
+.home-footer-container{max-width:1280px;margin:0 auto;text-align:center}
+.home-footer-text{font-size:12px;color:#64748b}
+.home-footer-text a{color:#0284c7;text-decoration:none;margin:0 4px}
+
+@media (max-width:900px){
+  .home-hero-title{font-size:32px}
+  .home-features{grid-template-columns:1fr}
+  .home-hero-buttons{flex-direction:column}
+  .home-hero-btn-primary,.home-hero-btn-secondary{width:100%}
+}

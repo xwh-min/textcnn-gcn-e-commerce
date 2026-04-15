@@ -1,0 +1,43 @@
+.batch-page{min-height:100vh;background:#f4f7fb;padding:18px}
+.batch-container{max-width:1280px;margin:0 auto}
+.batch-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.batch-title{font-size:28px;font-weight:700;color:#0f172a;margin:0 0 4px}
+.batch-subtitle{font-size:14px;color:#64748b;margin:0}
+.reset-btn{height:38px;padding:0 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-weight:600;color:#0f172a}
+
+.batch-steps{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.step-number{width:30px;height:30px;border-radius:999px;background:#e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.step-item.active .step-number{background:#0284c7;color:#fff}
+.step-label{font-size:12px;color:#64748b}
+.step-line{width:34px;height:2px;background:#cbd5e1}
+.step-line.active{background:#0284c7}
+
+.batch-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:0 8px 18px rgba(2,8,23,.05)}
+.upload-section{text-align:center;padding:24px 12px}
+.upload-title{font-size:20px;font-weight:700;color:#0f172a}
+.upload-actions{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.download-btn,.upload-btn,.btn-primary,.btn-secondary,.export-btn{height:40px;padding:0 14px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer}
+.download-btn,.btn-secondary,.export-btn{background:#fff;border:1px solid #cbd5e1;color:#0f172a}
+.upload-btn,.btn-primary{background:linear-gradient(90deg,#0284c7,#0ea5e9);border:none;color:#fff}
+
+.table-container{overflow-x:auto;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:12px}
+.enterprise-table{width:100%;border-collapse:collapse}
+.enterprise-table th{font-size:12px;color:#64748b;text-align:left;padding:10px;border-bottom:1px solid #e2e8f0}
+.enterprise-table td{font-size:13px;color:#334155;padding:10px;border-bottom:1px solid #eef2f7}
+.enterprise-table tr:hover{background:#f8fafc}
+.status-badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.status-badge.pending{background:#f1f5f9;color:#64748b}
+.status-badge.processing{background:#e0f2fe;color:#075985}
+.status-badge.success{background:#dcfce7;color:#166534}
+.status-badge.failed{background:#fee2e2;color:#b91c1c}
+
+.progress-stats{display:flex;gap:16px;margin-bottom:8px}
+.stat-label{font-size:12px;color:#64748b}
+.stat-value{font-size:24px;font-weight:800;color:#0f172a}
+.progress-bar{height:10px;border-radius:999px;background:#e2e8f0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#0284c7,#0ea5e9)}
+
+.batch-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
+.view-fail-btn{height:30px;padding:0 8px;border:1px solid #fecaca;background:#fff;color:#b91c1c;border-radius:8px;font-size:12px;font-weight:700}
+
+@media (max-width:900px){.batch-page{padding:14px}.upload-actions{flex-direction:column}.batch-steps{flex-wrap:wrap}}

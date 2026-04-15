@@ -1,0 +1,34 @@
+# 复制此模板到 settings.yaml 后按环境修改
+
+system:
+  ip:
+  port: 9090
+  env: dev
+
+log:
+  app: server
+  dir: Logs
+
+db:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: yourpassword
+  dbname: yourname
+  sslmode: disable
+
+onnx:
+  model_path: models/model.onnx
+  input_size: 128
+
+inference:
+  # auto | remote | onnx | mock
+  backend: auto
+
+  # true: 主后端异常直接失败；false: 允许降级
+  strict: false
+
+  remote:
+    # Windows 推荐 remote，填 AI 服务地址
+    url: http://127.0.0.1:5000
+    timeout_ms: 3000

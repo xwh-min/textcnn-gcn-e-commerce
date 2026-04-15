@@ -1,0 +1,310 @@
+/* 数据中心首页样式 - TikTok Shop 风格 */
+.datacenter-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0d0d0d 100%);
+  padding: 0;
+  position: relative;
+}
+
+.datacenter-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(254, 44, 85, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(37, 244, 238, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.datacenter-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.datacenter-header {
+  margin-bottom: 48px;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.datacenter-title {
+  font-size: 40px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.datacenter-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.datacenter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 56px;
+}
+
+.datacenter-card {
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.95));
+  border-radius: 20px;
+  padding: 32px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.datacenter-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #fe2c55, #25f4ee);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.datacenter-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(254, 44, 85, 0.05), rgba(37, 244, 238, 0.05));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.datacenter-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.datacenter-card:hover::before {
+  opacity: 1;
+}
+
+.datacenter-card:hover::after {
+  opacity: 1;
+}
+
+.datacenter-card-icon {
+  font-size: 48px;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(254, 44, 85, 0.15), rgba(37, 244, 238, 0.15));
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.datacenter-card:hover .datacenter-card-icon {
+  transform: scale(1.1) rotate(5deg);
+  background: linear-gradient(135deg, rgba(254, 44, 85, 0.25), rgba(37, 244, 238, 0.25));
+}
+
+.datacenter-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -0.3px;
+}
+
+.datacenter-card-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.datacenter-card-action {
+  font-size: 14px;
+  background: linear-gradient(135deg, #fe2c55, #ff4d73);
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+  align-self: flex-start;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(254, 44, 85, 0.3);
+}
+
+.datacenter-card:hover .datacenter-card-action {
+  box-shadow: 0 8px 25px rgba(254, 44, 85, 0.4);
+  transform: translateX(5px);
+}
+
+/* 统计区域 */
+.datacenter-stats {
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.95));
+  border-radius: 24px;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.datacenter-stats::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #fe2c55, #25f4ee, #fe2c55);
+  background-size: 200% 100%;
+  animation: gradientMove 3s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.datacenter-stats-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 32px 0;
+  letter-spacing: -0.3px;
+  position: relative;
+  z-index: 1;
+}
+
+.datacenter-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.datacenter-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.datacenter-stat-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.datacenter-stat-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.datacenter-stat-icon.news {
+  background: linear-gradient(135deg, rgba(37, 244, 238, 0.2), rgba(26, 213, 209, 0.2));
+  border: 1px solid rgba(37, 244, 238, 0.3);
+}
+
+.datacenter-stat-icon.complaints {
+  background: linear-gradient(135deg, rgba(254, 44, 85, 0.2), rgba(255, 77, 115, 0.2));
+  border: 1px solid rgba(254, 44, 85, 0.3);
+}
+
+.datacenter-stat-icon.orders {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.datacenter-stat-icon.logistics {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.datacenter-stat-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.datacenter-stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 4px;
+}
+
+.datacenter-stat-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .datacenter-container {
+    padding: 24px 16px;
+  }
+  
+  .datacenter-title {
+    font-size: 28px;
+  }
+  
+  .datacenter-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .datacenter-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .datacenter-stats {
+    padding: 24px;
+  }
+}
