@@ -38,6 +38,8 @@ type ComplaintResponse struct {
 	ComplaintDate     time.Time     `json:"complaint_date"`
 	IsProcessed       bool          `json:"is_processed"`
 	CreatedAt         time.Time     `json:"created_at"`
+	OrderNo           string        `json:"order_no"`
+	CompanyName       string        `json:"company_name"`
 	// 关联的企业信息
 	TargetCompany     *CompanyInfo  `json:"target_company,omitempty"`
 	// 关联的物流商信息
@@ -384,6 +386,8 @@ func complaintToResponse(complaint *model.UserComplaint) *ComplaintResponse {
 		ComplaintDate:     complaint.ComplaintDate,
 		IsProcessed:       complaint.IsProcessed,
 		CreatedAt:         complaint.CreatedAt,
+		OrderNo:           "",
+		CompanyName:       "",
 	}
 }
 
@@ -394,10 +398,16 @@ func loadCompanyInfoForComplaint(resp *ComplaintResponse) {
 	
 	var company model.EcoCompany
 	if err := db.GetDB().First(&company, resp.TargetCompanyID).Error; err == nil {
+		resp.CompanyName = company.CompanyName
 		resp.TargetCompany = &CompanyInfo{
 			ID:          company.ID,
 			CompanyName: company.CompanyName,
 			CreditCode:  company.CreditCode,
+		}
+		
+		var order model.OrderData
+		if err := db.GetDB().Where("company_id = ?", company.ID).First(&order).Error; err == nil {
+			resp.OrderNo = order.OrderNo
 		}
 	}
 }

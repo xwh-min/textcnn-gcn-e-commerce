@@ -26,7 +26,6 @@ func SetupRouter() *gin.Engine {
 	RegisterLogisticsRecordRoutes(r)
 	RegisterRoleRoutes(r)
 	RegisterOperationLogRoutes(r)
-	RegisterAPIKeyRoutes(r)
 
 	return r
 }
@@ -68,6 +67,7 @@ func RegisterRiskRoutes(r *gin.Engine) {
 		protected.GET("/predictions", handlers.PredictionHistory)
 		protected.GET("/report", handlers.PredictionReport)
 		protected.GET("/health", handlers.PredictorHealth)
+		protected.GET("/trend", handlers.RiskTrend)
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"server/inference"
+	"server/internal/model"
 	"server/repository"
 	"time"
 )
@@ -39,7 +40,7 @@ type RiskPredictionResult struct {
 	ComplianceRisk string                `json:"compliance_risk"`
 	PaymentRisk    string                `json:"payment_risk"`
 	Scores         RiskPredictionScore   `json:"scores"`
-	PredictionID   uint                  `json:"prediction_id,omitempty"`
+	PredictionID   int64                 `json:"prediction_id,omitempty"`
 	FeatureMeta    inference.FeatureMeta `json:"feature_meta"`
 }
 
@@ -155,16 +156,42 @@ func (s *RiskPredictionService) Predict(ctx context.Context, req *RiskPrediction
 		FeatureMeta: featureMeta,
 	}
 
-	prediction := &repository.RiskPrediction{
-		CompanyName:     req.CompanyName,
-		ComplianceRisk:  result.ComplianceRisk,
-		PaymentRisk:     result.PaymentRisk,
-		ComplianceScore: result.Scores.ComplianceScore,
-		PaymentScore:    result.Scores.PaymentScore,
+	complianceRiskInt := 0
+	if result.ComplianceRisk != "low" {
+		complianceRiskInt = 1
 	}
 
-	inputData, _ := json.Marshal(req)
-	prediction.InputData = string(inputData)
+	paymentRiskInt := 0
+	if result.PaymentRisk != "low" {
+		paymentRiskInt = 1
+	}
+
+	now := time.Now()
+	startDate := now.AddDate(0, 0, -90)
+
+	var companyID int64 = 0
+	var companyName string = req.CompanyName
+	if company, err := s.companyRepo.GetByName(ctx, req.CompanyName); err == nil {
+		companyID = company.ID
+		companyName = company.CompanyName
+	}
+
+	prediction := &model.RiskPrediction{
+		CompanyID:          companyID,
+		CompanyName:        companyName,
+		StartDate:          startDate,
+		EndDate:            now,
+		ComplianceRisk:     complianceRiskInt,
+		ComplianceProb:     float64(result.Scores.ComplianceScore),
+		PaymentRisk:        paymentRiskInt,
+		PaymentProb:        float64(result.Scores.PaymentScore),
+		RiskLevel:          getRiskLevelFromScores(result.Scores.ComplianceScore, result.Scores.PaymentScore),
+		RiskReason:         "Risk prediction based on model output",
+		GraphFeatureSummary: fmt.Sprintf("Graph features analyzed"),
+		TextFeatureSummary:  fmt.Sprintf("Text features analyzed"),
+		ModelVersion:       "v1.0",
+		PredictedAt:        now,
+	}
 
 	if err := s.repo.SavePrediction(ctx, prediction); err != nil {
 		log.Printf("Failed to save prediction: %v", err)
@@ -204,42 +231,45 @@ func (s *RiskPredictionService) BatchPredict(ctx context.Context, companyNames [
 	return results, nil
 }
 
-func (s *RiskPredictionService) GetPredictionHistory(ctx context.Context, companyName string, limit int) ([]*repository.RiskPrediction, error) {
+func (s *RiskPredictionService) GetPredictionHistory(ctx context.Context, companyName string, limit int) ([]*model.RiskPrediction, error) {
 	if limit <= 0 {
 		limit = 10
 	}
 	return s.repo.GetPredictionsByCompany(ctx, companyName, limit)
 }
 
-func (s *RiskPredictionService) GetLatestPrediction(ctx context.Context, companyName string) (*repository.RiskPrediction, error) {
+func (s *RiskPredictionService) GetMonthlyStatistics(ctx context.Context, months int) ([]map[string]interface{}, error) {
+	if months <= 0 {
+		months = 6
+	}
+	return s.repo.GetMonthlyStatistics(ctx, months)
+}
+
+func (s *RiskPredictionService) GetLatestPrediction(ctx context.Context, companyName string) (*model.RiskPrediction, error) {
 	return s.repo.GetLatestPrediction(ctx, companyName)
 }
 
 func getRiskLevel(score float32) string {
-	switch {
-	case score < 0.3:
-		return "low"
-	case score < 0.7:
-		return "medium"
-	default:
+	if score >= 0.7 {
 		return "high"
+	} else if score >= 0.4 {
+		return "medium"
 	}
+	return "low"
 }
 
-type Error struct {
-	Code    string
-	Message string
-}
-
-func (e *Error) Error() string {
-	return fmt.Sprintf("[%s] %s", e.Code, e.Message)
+func getRiskLevelFromScores(compliance, payment float32) string {
+	if compliance >= 0.7 || payment >= 0.7 {
+		return "high"
+	} else if compliance >= 0.4 || payment >= 0.4 {
+		return "medium"
+	}
+	return "low"
 }
 
 var (
-	ErrInvalidCompanyName = &Error{Code: "INVALID_INPUT", Message: "company name is required"}
-	ErrCompanyNotFound    = &Error{Code: "NOT_FOUND", Message: "company not found"}
-	ErrInvalidModelOutput = &Error{Code: "MODEL_ERROR", Message: "invalid model output"}
-	ErrDatabaseError      = &Error{Code: "DATABASE_ERROR", Message: "database operation failed"}
+	ErrInvalidCompanyName = fmt.Errorf("invalid company name")
+	ErrInvalidModelOutput = fmt.Errorf("invalid model output")
 )
 
 type PredictionRecord struct {

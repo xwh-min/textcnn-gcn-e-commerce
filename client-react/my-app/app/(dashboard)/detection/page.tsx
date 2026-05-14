@@ -91,27 +91,27 @@ export default function DetectionPage() {
 
       allEnterprises = allEnterprises.concat(
         enterpriseList.map((item: any) => ({
-          id: String(item.id),
-          name: item.name,
-          creditCode: item.credit_code || item.creditCode || '',
+          id: `enterprise-${String(item.id)}`,
+          name: item.company_name || '',
+          creditCode: item.credit_code || '',
           type: 'enterprise' as const,
         }))
       );
 
       allEnterprises = allEnterprises.concat(
         logisticsList.map((item: any) => ({
-          id: String(item.id),
-          name: item.name,
-          creditCode: item.code || item.credit_code || item.creditCode || '',
+          id: `logistics-${String(item.id)}`,
+          name: item.provider_name || '',
+          creditCode: item.business_license_no || '',
           type: 'logistics' as const,
         }))
       );
 
       allEnterprises = allEnterprises.concat(
         customsList.map((item: any) => ({
-          id: String(item.id),
-          name: item.name,
-          creditCode: item.code || item.credit_code || '',
+          id: `customs-${String(item.id)}`,
+          name: item.customs_name || '',
+          creditCode: item.customs_code || '',
           type: 'customs' as const,
         }))
       );
@@ -137,21 +137,23 @@ export default function DetectionPage() {
 
   const handleSelectEnterprise = (enterprise: Enterprise) => {
     setSelectedEnterprise(enterprise);
-    setEnterpriseSearch(enterprise.name);
+    setEnterpriseSearch(enterprise.name || enterprise.creditCode);
     setShowEnterpriseDropdown(false);
   };
 
   const saveToHistory = async (enterprise: Enterprise, result: RiskResult) => {
     try {
-      await apiService.getRiskHistory({ company_name: enterprise.name, limit: 1 });
+      await apiService.getRiskHistory({ company_name: enterprise.name || enterprise.creditCode, limit: 1 });
     } catch {
       // 后端已自动保存预测记录，无需前端手动存储
     }
   };
 
   const handlePredict = async () => {
-    if (!selectedEnterprise) {
-      alert('请先选择企业');
+    const companyName = selectedEnterprise?.name || selectedEnterprise?.creditCode || enterpriseSearch.trim();
+    
+    if (!companyName) {
+      alert('请输入或选择企业');
       return;
     }
 
@@ -162,7 +164,7 @@ export default function DetectionPage() {
 
     try {
       const response = await apiService.predictRisk({
-        company_name: selectedEnterprise.name,
+        company_name: companyName,
         recent_data: {
           text: `最近${timeRange}个月`,
         },
@@ -196,7 +198,14 @@ export default function DetectionPage() {
 
         setPredictionResult(result);
         setShowResult(true);
-        await saveToHistory(selectedEnterprise, result);
+        
+        const currentEnterprise: Enterprise = {
+          id: companyName,
+          name: companyName,
+          creditCode: companyName,
+          type: 'enterprise',
+        };
+        await saveToHistory(currentEnterprise, result);
       } else {
         alert(response.message || '预测失败');
       }
@@ -209,12 +218,15 @@ export default function DetectionPage() {
   };
 
   const handleExportPDF = async () => {
-    if (!selectedEnterprise || !predictionResult) return;
+    if (!predictionResult) return;
+    
+    const companyName = selectedEnterprise?.name || selectedEnterprise?.creditCode || enterpriseSearch.trim();
+    if (!companyName) return;
 
     try {
       const resp = await apiService.getRiskReport({
         prediction_id: predictionResult.predictionId ? String(predictionResult.predictionId) : undefined,
-        company_name: selectedEnterprise.name,
+        company_name: companyName,
       });
       if (resp.code === 404) {
         alert('报告生成功能开发中，敬请期待');
@@ -304,12 +316,10 @@ export default function DetectionPage() {
                         filteredEnterprises.map((enterprise) => (
                           <div
                             key={enterprise.id}
-                            className={`enterprise-dropdown-item ${
-                              selectedEnterprise?.id === enterprise.id ? 'selected' : ''
-                            }`}
+                            className={`enterprise-dropdown-item ${selectedEnterprise?.id === enterprise.id ? 'selected' : ''}`}
                             onClick={() => handleSelectEnterprise(enterprise)}
                           >
-                            <div className="enterprise-name">{enterprise.name}</div>
+                            <div className="enterprise-name">{enterprise.name || enterprise.creditCode}</div>
                             <div className="enterprise-code">{enterprise.creditCode}</div>
                           </div>
                         ))

@@ -31,15 +31,15 @@ export const useAuthStore = create<AuthState>()(
         try {
           const response = await apiService.login(username, password);
           
-          if (response.code === 200 && response.data?.token) {
-            const token = response.data.token;
+          if (response.code === 200 && response.token) {
+            const token = response.token;
             const fallbackUser: User = {
-              id: response.data.user?.id ?? 0,
-              username: response.data.user?.username ?? username,
-              email: response.data.user?.email,
-              phone: response.data.user?.phone,
-              role: response.data.user?.role,
-              permissions: response.data.user?.permissions ?? [],
+              id: response.user?.id ?? 0,
+              username: response.user?.username ?? username,
+              email: response.user?.email,
+              phone: response.user?.phone,
+              role: response.user?.role,
+              permissions: response.user?.permissions ?? [],
             };
 
             // 先写入 token，确保后续 getCurrentUser 能携带鉴权头
@@ -53,7 +53,7 @@ export const useAuthStore = create<AuthState>()(
             try {
               const currentUserResp = await apiService.getCurrentUser();
               if (currentUserResp.code === 200) {
-                const remoteUser = (currentUserResp.data ?? response.data.user) as Partial<User> | undefined;
+                const remoteUser = (currentUserResp.data ?? response.user) as Partial<User> | undefined;
                 set((state) => ({
                   ...state,
                   user: {

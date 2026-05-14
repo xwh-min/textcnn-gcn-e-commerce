@@ -44,7 +44,13 @@ func buildRemoteChain(conf *config.InitConfig) (Predictor, error) {
 		return buildONNXChain(conf)
 	}
 
-	primary := NewRemoteAIInference(remoteURL, conf.Inference.Remote.TimeoutMS)
+	primary := NewRemoteAIInference(remoteURL, conf.Inference.Remote.TimeoutMS, conf.Inference.Remote.APIKey)
+
+	if conf.Inference.Remote.Username != "" && conf.Inference.Remote.Password != "" {
+		primary.SetCredentials(conf.Inference.Remote.Username, conf.Inference.Remote.Password)
+		log.Printf("AI service credentials configured, will auto-acquire token")
+	}
+
 	if conf.Inference.Strict {
 		return primary, nil
 	}

@@ -4,13 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
-	"strconv"
 	"server/globle"
 	"server/inference"
 	"server/internal/db"
+	"server/internal/model"
 	"server/repository"
 	"server/service"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -128,11 +131,11 @@ type PredictRequest struct {
 }
 
 type PredictData struct {
-	ComplianceRisk     string                     `json:"compliance_risk"`
-	PaymentRisk        string                     `json:"payment_risk"`
+	ComplianceRisk     string                      `json:"compliance_risk"`
+	PaymentRisk        string                      `json:"payment_risk"`
 	Scores             service.RiskPredictionScore `json:"scores"`
-	PredictionID       uint                       `json:"prediction_id,omitempty"`
-	FeatureSpecAligned bool                       `json:"feature_spec_aligned"`
+	PredictionID       int64                       `json:"prediction_id,omitempty"`
+	FeatureSpecAligned bool                        `json:"feature_spec_aligned"`
 }
 
 func Predict(c *gin.Context) {
@@ -221,16 +224,13 @@ func BatchPredict(c *gin.Context) {
 }
 
 type PredictionHistoryData struct {
-	Items []*repository.RiskPrediction `json:"items"`
-	Count int                          `json:"count"`
+	Items []*model.RiskPrediction `json:"items"`
+	Count int                     `json:"count"`
 }
 
 func PredictionHistory(c *gin.Context) {
 	companyName := c.Query("company_name")
-	if companyName == "" {
-		respond(c, http.StatusBadRequest, 400, "company_name is required", nil)
-		return
-	}
+	logrus.Infof("PredictionHistory called with company_name: '%s'", companyName)
 
 	limit := 10
 	if rawLimit := c.Query("limit"); rawLimit != "" {
@@ -252,8 +252,44 @@ func PredictionHistory(c *gin.Context) {
 		return
 	}
 
+	// 转换为前端期望的数据结构
+	type FrontendRiskRecord struct {
+		ID              int64     `json:"id"`
+		CompanyName     string    `json:"company_name"`
+		ComplianceRisk  int       `json:"compliance_risk"`
+		PaymentRisk     int       `json:"payment_risk"`
+		ComplianceScore float64   `json:"compliance_score"`
+		PaymentScore    float64   `json:"payment_score"`
+		RiskLevel       string    `json:"risk_level"`
+		RiskReason      string    `json:"risk_reason"`
+		CreatedAt       time.Time `json:"created_at"`
+	}
+
+	frontendResults := make([]*FrontendRiskRecord, len(results))
+	for i, result := range results {
+		frontendResults[i] = &FrontendRiskRecord{
+			ID:              result.ID,
+			CompanyName:     result.CompanyName,
+			ComplianceRisk:  result.ComplianceRisk,
+			PaymentRisk:     result.PaymentRisk,
+			ComplianceScore: result.ComplianceProb,
+			PaymentScore:    result.PaymentProb,
+			RiskLevel:       result.RiskLevel,
+			RiskReason:      result.RiskReason,
+			CreatedAt:       result.PredictedAt,
+		}
+	}
+
 	logrus.WithField("company", companyName).Infof("Retrieved %d prediction records", len(results))
-	respond(c, http.StatusOK, 200, "ok", PredictionHistoryData{Items: results, Count: len(results)})
+	// 按照前端期望的格式返回数据
+	responseData := struct {
+		Items []*FrontendRiskRecord `json:"items"`
+		Count int                   `json:"count"`
+	}{
+		Items: frontendResults,
+		Count: len(frontendResults),
+	}
+	respond(c, http.StatusOK, 200, "ok", responseData)
 }
 
 type PredictorHealthData struct {
@@ -299,4 +335,46 @@ func PredictionReport(c *gin.Context) {
 		"prediction_id": predictionID,
 		"company_name":  companyName,
 	})
+}
+
+func RiskTrend(c *gin.Context) {
+	months := 6
+	if rawMonths := c.Query("months"); rawMonths != "" {
+		if n, err := strconv.Atoi(rawMonths); err == nil && n > 0 {
+			months = n
+		}
+	}
+
+	if riskService == nil {
+		logrus.Error("Risk service not initialized")
+		respond(c, http.StatusInternalServerError, 500, "risk service not initialized", nil)
+		return
+	}
+
+	results, err := riskService.GetMonthlyStatistics(c.Request.Context(), months)
+	if err != nil {
+		logrus.WithError(err).Error("Failed to get monthly statistics")
+		respond(c, http.StatusInternalServerError, 500, "failed to get monthly statistics: "+err.Error(), nil)
+		return
+	}
+
+	type TrendData struct {
+		Month           string `json:"month"`
+		TotalDetection  int    `json:"total_detection"`
+		HighRiskCount   int    `json:"high_risk_count"`
+		MediumRiskCount int    `json:"medium_risk_count"`
+	}
+
+	trendResults := make([]*TrendData, len(results))
+	for i, result := range results {
+		trendResults[i] = &TrendData{
+			Month:           fmt.Sprintf("%v", result["month"]),
+			TotalDetection:  result["total_detection"].(int),
+			HighRiskCount:   result["high_risk_count"].(int),
+			MediumRiskCount: result["medium_risk_count"].(int),
+		}
+	}
+
+	logrus.Infof("Retrieved %d monthly statistics records", len(results))
+	respond(c, http.StatusOK, 200, "ok", trendResults)
 }

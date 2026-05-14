@@ -1,0 +1,10 @@
+{
+  "schema_version": "v1",
+  "text_feature_size": 128,
+  "graph_feature_size": 64,
+  "total_feature_size": 192,
+  "feature_source": "heuristic-v1",
+  "text_norm": "clip[0,1], denominator=(utf8_len(recent_data)+1)",
+  "graph_norm": "derived stats + clip[0,1]",
+  "missing_policy": "empty text/list/graph => zero-safe fallback"
+}

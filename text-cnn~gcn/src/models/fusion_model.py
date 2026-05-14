@@ -28,10 +28,28 @@ class FusionModel(nn.Module):
     def forward(self, text_input, graph_input, edge_index):
         # 提取文本特征（TextCNN）
         text_features = self.text_extractor(text_input)
-        
-        # 提取图结构特征
+        if text_features.dim() == 1:
+            text_features = text_features.unsqueeze(0)
+
+        # 提取图结构特征（节点级）
         graph_features = self.gcn(graph_input, edge_index)
-        
+
+        # 将节点级图特征池化到样本级，确保可与文本特征按batch对齐
+        if graph_features.dim() == 1:
+            graph_features = graph_features.unsqueeze(0)
+
+        if graph_features.size(0) != text_features.size(0):
+            if text_features.size(0) == 1:
+                # 当前训练以单样本子图为主：对节点特征做平均池化
+                graph_features = graph_features.mean(dim=0, keepdim=True)
+            elif graph_features.size(0) == 1:
+                graph_features = graph_features.expand(text_features.size(0), -1)
+            else:
+                raise ValueError(
+                    f'Batch size mismatch: text_features={tuple(text_features.shape)}, '
+                    f'graph_features={tuple(graph_features.shape)}'
+                )
+
         # 融合特征 - 门控机制
         combined = torch.cat([text_features, graph_features], dim=1)
         gate = torch.sigmoid(self.fusion_gate(combined))

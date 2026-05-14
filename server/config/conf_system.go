@@ -9,6 +9,9 @@ type ONNX struct {
 type InferenceRemote struct {
 	URL       string `yaml:"url"`
 	TimeoutMS int    `yaml:"timeout_ms"`
+	APIKey    string `yaml:"api_key"`
+	Username  string `yaml:"username"`
+	Password  string `yaml:"password"`
 }
 
 type Inference struct {

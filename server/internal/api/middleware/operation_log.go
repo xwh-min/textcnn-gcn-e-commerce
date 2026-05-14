@@ -28,56 +28,39 @@ func (w ResponseWriter) Write(b []byte) (int, error) {
 // OperationLogger 操作日志中间件
 func OperationLogger() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 记录开始时间
 		startTime := time.Now()
 
-		// 获取请求体
 		var requestBody string
 		if c.Request.Body != nil {
 			bodyBytes, err := ioutil.ReadAll(c.Request.Body)
 			if err == nil {
 				requestBody = string(bodyBytes)
-				// 重新写入请求体，以便后续 handler 可以读取
 				c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 			}
 		}
 
-		// 创建响应捕获器
 		writer := &ResponseWriter{
 			ResponseWriter: c.Writer,
 			body:           bytes.NewBufferString(""),
 		}
 		c.Writer = writer
 
-		// 处理请求
 		c.Next()
 
-		// 计算处理时间
 		duration := time.Since(startTime)
 
-		// 获取用户信息
 		userID := c.GetInt("userID")
 		username := c.GetString("username")
 		if username == "" {
 			username = "anonymous"
 		}
 
-		// 提取模块信息
 		module := extractModule(c.Request.URL.Path)
-
-		// 提取操作类型
 		operation := extractOperation(c.Request.Method)
-
-		// 获取 IP 地址
 		ipAddress := c.ClientIP()
-
-		// 获取 User-Agent
 		userAgent := c.Request.UserAgent()
-
-		// 获取响应体
 		responseBody := writer.body.String()
 
-		// 异步保存日志
 		go saveOperationLog(&model.SysOperationLog{
 			UserID:      int64(userID),
 			Username:    username,
@@ -90,7 +73,6 @@ func OperationLogger() gin.HandlerFunc {
 			CreatedAt:   startTime,
 		})
 
-		// 记录日志
 		logrus.WithFields(logrus.Fields{
 			"user_id":     userID,
 			"username":    username,
@@ -103,12 +85,10 @@ func OperationLogger() gin.HandlerFunc {
 	}
 }
 
-// extractModule 从路径中提取模块名
 func extractModule(path string) string {
-	// 移除前缀
 	path = strings.TrimPrefix(path, "/api")
 	path = strings.TrimPrefix(path, "/v1")
-	
+
 	parts := strings.Split(path, "/")
 	if len(parts) >= 2 {
 		return parts[1]
@@ -116,7 +96,6 @@ func extractModule(path string) string {
 	return "unknown"
 }
 
-// extractOperation 从 HTTP 方法中提取操作类型
 func extractOperation(method string) string {
 	switch method {
 	case http.MethodGet:
@@ -134,33 +113,90 @@ func extractOperation(method string) string {
 	}
 }
 
-// saveOperationLog 保存操作日志到数据库
-func saveOperationLog(log *model.SysOperationLog) {
-	// 格式化请求数据为 JSON
-	if log.RequestData != "" {
-		var jsonData interface{}
-		if err := json.Unmarshal([]byte(log.RequestData), &jsonData); err == nil {
+func truncateString(s string, maxLen int) string {
+	if len(s) <= maxLen {
+		return s
+	}
+	return s[:maxLen]
+}
+
+func formatJSONField(s string, maxLen int, isJSONB bool) string {
+	if s == "" {
+		return s
+	}
+
+	s = truncateString(s, maxLen)
+
+	var jsonData interface{}
+	if err := json.Unmarshal([]byte(s), &jsonData); err == nil {
+		if containsUnescapedNestedJSON(s) {
+			encoded, _ := json.Marshal(s)
+			if len(encoded) <= maxLen {
+				return string(encoded)
+			}
+			encoded, _ = json.Marshal(truncateString(s, maxLen-len(`""`)))
+			return string(encoded)
+		}
+
+		if isJSONB {
 			formatted, _ := json.Marshal(jsonData)
-			log.RequestData = string(formatted)
+			if len(formatted) <= maxLen {
+				return string(formatted)
+			}
+			truncated, _ := json.Marshal(truncateString(string(formatted), maxLen))
+			return string(truncated)
+		}
+		formatted, _ := json.MarshalIndent(jsonData, "", "  ")
+		if len(formatted) <= maxLen {
+			return string(formatted)
+		}
+		return truncateString(string(formatted), maxLen)
+	}
+
+	encoded, _ := json.Marshal(s)
+	if len(encoded) <= maxLen {
+		return string(encoded)
+	}
+	encoded, _ = json.Marshal(truncateString(s, maxLen-len(`""`)))
+	return string(encoded)
+}
+
+func containsUnescapedNestedJSON(s string) bool {
+	inString := false
+	escape := false
+	nestedBraceCount := 0
+
+	for _, c := range s {
+		if escape {
+			escape = false
+			continue
+		}
+
+		if c == '\\' {
+			escape = true
+			continue
+		}
+
+		if c == '"' {
+			inString = !inString
+			continue
+		}
+
+		if inString {
+			if c == '{' {
+				nestedBraceCount++
+			} else if c == '}' {
+				nestedBraceCount--
+			}
 		}
 	}
 
-	// 格式化响应数据为 JSON
-	if log.Response != "" {
-		var jsonData interface{}
-		if err := json.Unmarshal([]byte(log.Response), &jsonData); err == nil {
-			formatted, _ := json.MarshalIndent(jsonData, "", "  ")
-			log.Response = string(formatted)
-		}
-	}
+	return nestedBraceCount != 0
+}
 
-	// 限制长度
-	if len(log.RequestData) > 65535 {
-		log.RequestData = log.RequestData[:65535]
-	}
-	if len(log.Response) > 65535 {
-		log.Response = log.Response[:65535]
-	}
+func saveOperationLog(log *model.SysOperationLog) {
+	log.RequestData = formatJSONField(log.RequestData, 65535, true)
+	log.Response = formatJSONField(log.Response, 65535, false)
 
 	if err := db.GetDB().Create(log).Error; err != nil {
 		logrus.WithError(err).Error("保存操作日志失败")

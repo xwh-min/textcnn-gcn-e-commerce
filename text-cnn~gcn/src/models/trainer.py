@@ -52,14 +52,40 @@ class Trainer:
 
         raise ValueError('Unsupported text_input format. Expect LongTensor or list[str].')
 
+    def _prepare_graph_input(self, graph_input):
+        if not isinstance(graph_input, torch.Tensor):
+            raise ValueError('Unsupported graph_input format. Expect Tensor.')
+
+        graph_input = graph_input.float()
+
+        # DataLoader(batch_size=1) 时，图特征常为 [1, N, F]，需还原为 [N, F]
+        if graph_input.dim() == 3 and graph_input.size(0) == 1:
+            graph_input = graph_input.squeeze(0)
+
+        if graph_input.dim() != 2:
+            raise ValueError(f'Unsupported graph_input shape: {tuple(graph_input.shape)}. Expect [N, F].')
+
+        return graph_input
+
     def _prepare_edge_index(self, edge_index):
         if isinstance(edge_index, torch.Tensor):
-            return edge_index.long()
+            edge_index = edge_index.long()
+            # DataLoader(batch_size=1) 时，edge_index 可能是 [1, 2, E]
+            if edge_index.dim() == 3 and edge_index.size(0) == 1:
+                edge_index = edge_index.squeeze(0)
+            if edge_index.dim() != 2 or edge_index.size(0) != 2:
+                raise ValueError(f'Unsupported edge_index shape: {tuple(edge_index.shape)}. Expect [2, E].')
+            return edge_index
 
         if isinstance(edge_index, (list, tuple)) and len(edge_index) > 0 and isinstance(edge_index[0], torch.Tensor):
             # DataLoader默认collate下可能得到list[tensor]
             # 这里优先取第一个（通常数据集返回的是固定图结构）
-            return edge_index[0].long()
+            edge_index = edge_index[0].long()
+            if edge_index.dim() == 3 and edge_index.size(0) == 1:
+                edge_index = edge_index.squeeze(0)
+            if edge_index.dim() != 2 or edge_index.size(0) != 2:
+                raise ValueError(f'Unsupported edge_index shape: {tuple(edge_index.shape)}. Expect [2, E].')
+            return edge_index
 
         raise ValueError('Unsupported edge_index format.')
 
@@ -71,7 +97,7 @@ class Trainer:
             text_input, graph_input, edge_index, compliance_labels, payment_labels = batch
 
             text_input = self._prepare_text_input(text_input)
-            graph_input = graph_input.float()
+            graph_input = self._prepare_graph_input(graph_input)
             edge_index = self._prepare_edge_index(edge_index)
             compliance_labels = compliance_labels.long()
             payment_labels = payment_labels.long()
@@ -102,7 +128,7 @@ class Trainer:
                 text_input, graph_input, edge_index, compliance_labels, payment_labels = batch
 
                 text_input = self._prepare_text_input(text_input)
-                graph_input = graph_input.float()
+                graph_input = self._prepare_graph_input(graph_input)
                 edge_index = self._prepare_edge_index(edge_index)
                 compliance_labels = compliance_labels.long()
                 payment_labels = payment_labels.long()

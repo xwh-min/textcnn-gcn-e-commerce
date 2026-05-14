@@ -15,7 +15,7 @@
 .batch-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:0 8px 18px rgba(2,8,23,.05)}
 .upload-section{text-align:center;padding:24px 12px}
 .upload-title{font-size:20px;font-weight:700;color:#0f172a}
-.upload-actions{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.upload-actions{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:12px}
 .download-btn,.upload-btn,.btn-primary,.btn-secondary,.export-btn{height:40px;padding:0 14px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer}
 .download-btn,.btn-secondary,.export-btn{background:#fff;border:1px solid #cbd5e1;color:#0f172a}
 .upload-btn,.btn-primary{background:linear-gradient(90deg,#0284c7,#0ea5e9);border:none;color:#fff}

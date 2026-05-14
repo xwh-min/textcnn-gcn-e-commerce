@@ -4,7 +4,12 @@ import os
 import functools
 import jwt
 import datetime
+import sys
 
+# 添加项目根目录到Python路径
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+# 使用绝对导入
 from src.models.fusion_model import FusionModel
 from src.data_processing.text_processor import TextProcessor
 from config.config import Config
@@ -94,7 +99,7 @@ def _build_model_and_text_processor():
     }
 
     gcn_params = {
-        'in_channels': 100,  # 需与训练图特征维度一致
+        'in_channels': 2,  # 需与训练图特征维度一致
         'hidden_dim': config.hidden_dim,
         'num_layers': config.gcn_layers,
     }
@@ -148,7 +153,7 @@ def predict():
             text_ids = text_processor.encode_text(text)
             text_input = torch.tensor(text_ids, dtype=torch.long).unsqueeze(0)
 
-            graph_input = torch.zeros((1, 100), dtype=torch.float)
+            graph_input = torch.zeros((1, 2), dtype=torch.float)
             edge_index = torch.tensor([[0], [0]], dtype=torch.long)
 
             with torch.no_grad():

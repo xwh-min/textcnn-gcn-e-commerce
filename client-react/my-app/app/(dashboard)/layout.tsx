@@ -57,6 +57,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
   const canAccess = useMemo(() => {
     const required = getRequiredPermissions(pathname || '');
@@ -86,6 +87,16 @@ export default function DashboardLayout({
     }
   }, [isAuthenticated, canAccess, firstAccessibleRoute, pathname, router]);
 
+  const handleLogoutAndLogin = () => {
+    logout();
+    router.push('/login');
+  };
+
+  const handleLogoutAndHome = () => {
+    logout();
+    router.push('/');
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="state-page">正在跳转到登录页...</div>
@@ -111,14 +122,14 @@ export default function DashboardLayout({
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => router.push('/login')}
+              onClick={handleLogoutAndLogin}
             >
               前往登录页
             </button>
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => router.push('/')}
+              onClick={handleLogoutAndHome}
             >
               返回首页
             </button>

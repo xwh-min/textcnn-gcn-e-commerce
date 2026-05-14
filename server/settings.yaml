@@ -9,8 +9,8 @@ db:
   host: localhost
   port: 5432
   user: postgres
-  password: yourpassword
-  dbname: yourname
+  password: YourPasswordHere
+  dbname: service
   sslmode: disable
 onnx:
   model_path: models/model.onnx
@@ -22,3 +22,6 @@ inference:
   remote:
     url: http://127.0.0.1:5000
     timeout_ms: 3000
+    api_key: ""
+    username: admin
+    password: Admin@123456

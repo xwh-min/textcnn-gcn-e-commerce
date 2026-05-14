@@ -20,6 +20,12 @@ func ReadConf() {
 	if err != nil {
 		panic(err)
 	}
+	
+	// 支持从环境变量覆盖 API Key
+	if apiKey := os.Getenv("INFERENCE_REMOTE_API_KEY"); apiKey != "" {
+		c.Inference.Remote.APIKey = apiKey
+	}
+	
 	globle.Conf = c
 	fmt.Println(c)
 	InitLogger()

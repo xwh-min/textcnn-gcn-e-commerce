@@ -50,35 +50,43 @@ const riskColors = {
   low: '#10b981',        // 绿色
 };
 
-// 默认数据
+// 默认数据 - 使用真实跨境电商企业名称
 const defaultData: GraphData = {
   nodes: [
     // 跨境电商企业
-    { id: 'e1', name: '跨境通A', type: 'enterprise', riskLevel: 'high' },
-    { id: 'e2', name: '跨境通B', type: 'enterprise', riskLevel: 'medium' },
-    { id: 'e3', name: '跨境通C', type: 'enterprise', riskLevel: 'low' },
-    { id: 'e4', name: '跨境通D', type: 'enterprise' },
+    { id: 'e1', name: '阿里巴巴国际站', type: 'enterprise', riskLevel: 'high' },
+    { id: 'e2', name: '京东国际', type: 'enterprise', riskLevel: 'medium' },
+    { id: 'e3', name: '网易考拉', type: 'enterprise', riskLevel: 'low' },
+    { id: 'e4', name: '唯品会跨境', type: 'enterprise' },
+    { id: 'e5', name: '小红书', type: 'enterprise', riskLevel: 'medium' },
     // 物流商
     { id: 'l1', name: '顺丰国际', type: 'logistics' },
     { id: 'l2', name: 'DHL', type: 'logistics' },
-    { id: 'l3', name: 'FedEx', type: 'logistics' },
+    { id: 'l3', name: 'FedEx联邦快递', type: 'logistics' },
+    { id: 'l4', name: 'EMS国际', type: 'logistics' },
     // 海关
     { id: 'c1', name: '深圳海关', type: 'customs' },
     { id: 'c2', name: '上海海关', type: 'customs' },
     { id: 'c3', name: '广州海关', type: 'customs' },
+    { id: 'c4', name: '杭州海关', type: 'customs' },
   ],
   edges: [
     // 企业与物流商的合作关系
     { source: 'e1', target: 'l1', type: 'cooperation', weight: 0.8, label: '物流合作(0.8)' },
     { source: 'e1', target: 'l2', type: 'cooperation', weight: 0.6, label: '物流合作(0.6)' },
     { source: 'e2', target: 'l1', type: 'cooperation', weight: 0.9, label: '物流合作(0.9)' },
-    { source: 'e3', target: 'l3', type: 'cooperation', weight: 0.7, label: '物流合作(0.7)' },
+    { source: 'e2', target: 'l4', type: 'cooperation', weight: 0.7, label: '物流合作(0.7)' },
+    { source: 'e3', target: 'l3', type: 'cooperation', weight: 0.75, label: '物流合作(0.75)' },
     { source: 'e4', target: 'l2', type: 'cooperation', weight: 0.5, label: '物流合作(0.5)' },
+    { source: 'e4', target: 'l4', type: 'cooperation', weight: 0.65, label: '物流合作(0.65)' },
+    { source: 'e5', target: 'l1', type: 'cooperation', weight: 0.85, label: '物流合作(0.85)' },
     // 企业与海关的合规关系
     { source: 'e1', target: 'c1', type: 'compliance', weight: 0.3, label: '报关关系(0.3)' },
+    { source: 'e1', target: 'c2', type: 'compliance', weight: 0.7, label: '报关关系(0.7)' },
     { source: 'e2', target: 'c2', type: 'compliance', weight: 0.8, label: '报关关系(0.8)' },
     { source: 'e3', target: 'c3', type: 'compliance', weight: 0.9, label: '报关关系(0.9)' },
     { source: 'e4', target: 'c1', type: 'compliance', weight: 0.6, label: '报关关系(0.6)' },
+    { source: 'e5', target: 'c4', type: 'compliance', weight: 0.85, label: '报关关系(0.85)' },
   ],
 };
 

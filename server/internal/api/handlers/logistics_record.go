@@ -46,6 +46,10 @@ type LogisticsRecordResponse struct {
 	DelayedDays       int           `json:"delayed_days"`
 	ExtraInfo         string        `json:"extra_info"`
 	CreatedAt         time.Time     `json:"created_at"`
+	CompanyName       string        `json:"company_name"`
+	ProviderName      string        `json:"provider_name"`
+	Origin            string        `json:"origin"`
+	Destination       string        `json:"destination"`
 	// 关联的订单信息
 	Order             *OrderInfo    `json:"order,omitempty"`
 	// 关联的物流商信息
@@ -374,6 +378,10 @@ func logisticsRecordToResponse(logistics *model.LogisticsRecord) *LogisticsRecor
 		DelayedDays:       logistics.DelayedDays,
 		ExtraInfo:         logistics.ExtraInfo,
 		CreatedAt:         logistics.CreatedAt,
+		CompanyName:       "",
+		ProviderName:      "",
+		Origin:            "中国",
+		Destination:       "",
 	}
 }
 
@@ -389,6 +397,12 @@ func loadOrderInfo(resp *LogisticsRecordResponse) {
 			OrderNo:  order.OrderNo,
 			CompanyID: order.CompanyID,
 		}
+		resp.Destination = order.DestinationCountry
+		
+		var company model.EcoCompany
+		if err := db.GetDB().First(&company, order.CompanyID).Error; err == nil {
+			resp.CompanyName = company.CompanyName
+		}
 	}
 }
 
@@ -399,6 +413,7 @@ func loadLogisticsProviderInfoForRecord(resp *LogisticsRecordResponse) {
 	
 	var provider model.LogisticsProvider
 	if err := db.GetDB().First(&provider, resp.LogisticsProviderID).Error; err == nil {
+		resp.ProviderName = provider.ProviderName
 		resp.LogisticsProvider = &LogisticsInfo{
 			ID:                provider.ID,
 			ProviderName:      provider.ProviderName,

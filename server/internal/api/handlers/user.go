@@ -12,7 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 // LoginRequest 登录请求结构
@@ -141,7 +140,7 @@ func getDefaultRoleID() int64 {
 	return 0
 }
 
-// Login 处理登录请求（方案A：优先 sys_user + sys_role）
+// Login 处理登录请求（方案A：sys_user + sys_role）
 func Login(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -155,91 +154,49 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// 1) 先走 sys_user（RBAC）
-	var sysUser model.SysUser
-	sysQuery := db.GetDB().Preload("Role")
-	if req.Username != "" {
-		sysQuery = sysQuery.Where("username = ?", req.Username)
-	} else {
-		// sys_user 无 email 字段，邮箱登录降级到 legacy users
-		sysQuery = sysQuery.Where("1 = 0")
-	}
-	err := sysQuery.First(&sysUser).Error
-	if err == nil {
-		if !sysUser.IsActive {
-			c.JSON(http.StatusUnauthorized, LoginResponse{Code: 401, Message: "账号已被禁用"})
-			return
-		}
-		if bcrypt.CompareHashAndPassword([]byte(sysUser.PasswordHash), []byte(req.Password)) != nil {
-			c.JSON(http.StatusUnauthorized, LoginResponse{Code: 401, Message: "密码错误"})
-			return
-		}
-
-		token, tkErr := utils.GenerateToken(int(sysUser.ID), sysUser.Username)
-		if tkErr != nil {
-			c.JSON(http.StatusInternalServerError, LoginResponse{Code: 500, Message: "生成 token 失败: " + tkErr.Error()})
-			return
-		}
-
-		permissions := parseRolePermissions(sysUser.Role)
-		c.JSON(http.StatusOK, LoginResponse{
-			Code:    200,
-			Message: "登录成功",
-			Token:   token,
-			User: &UserInfo{
-				ID:          int(sysUser.ID),
-				Username:    sysUser.Username,
-				Role:        sysUser.Role.RoleName,
-				Permissions: permissions,
-			},
-		})
+	// 仅走 sys_user（RBAC）
+	if req.Email != "" {
+		c.JSON(http.StatusBadRequest, LoginResponse{Code: 400, Message: "当前仅支持用户名登录"})
 		return
 	}
 
-	// 2) 兼容旧 users 表（避免现有注册用户无法登录）
-	type UserResult struct {
-		ID       int
-		Email    string
-		Username string
-		Password string
-	}
-	var user UserResult
-	var result *gorm.DB
-	if req.Email != "" {
-		result = db.GetDB().Raw(`SELECT id, email, username, password FROM users WHERE email = ?`, req.Email).Scan(&user)
-	} else {
-		result = db.GetDB().Raw(`SELECT id, email, username, password FROM users WHERE username = ?`, req.Username).Scan(&user)
-	}
-	if result.Error != nil || user.ID == 0 {
+	var sysUser model.SysUser
+	err := db.GetDB().Preload("Role").Where("username = ?", req.Username).First(&sysUser).Error
+	if err != nil {
 		c.JSON(http.StatusUnauthorized, LoginResponse{Code: 401, Message: "用户不存在"})
 		return
 	}
-	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)) != nil {
+
+	if !sysUser.IsActive {
+		c.JSON(http.StatusUnauthorized, LoginResponse{Code: 401, Message: "账号已被禁用"})
+		return
+	}
+	if bcrypt.CompareHashAndPassword([]byte(sysUser.PasswordHash), []byte(req.Password)) != nil {
 		c.JSON(http.StatusUnauthorized, LoginResponse{Code: 401, Message: "密码错误"})
 		return
 	}
 
-	token, tkErr := utils.GenerateToken(user.ID, user.Username)
+	token, tkErr := utils.GenerateToken(int(sysUser.ID), sysUser.Username)
 	if tkErr != nil {
 		c.JSON(http.StatusInternalServerError, LoginResponse{Code: 500, Message: "生成 token 失败: " + tkErr.Error()})
 		return
 	}
 
+	permissions := parseRolePermissions(sysUser.Role)
 	c.JSON(http.StatusOK, LoginResponse{
 		Code:    200,
 		Message: "登录成功",
 		Token:   token,
 		User: &UserInfo{
-			ID:          user.ID,
-			Username:    user.Username,
-			Email:       user.Email,
-			Role:        "普通用户",
-			Permissions: []string{"dashboard_view", "detection_single", "risks_view"},
+			ID:          int(sysUser.ID),
+			Username:    sysUser.Username,
+			Role:        sysUser.Role.RoleName,
+			Permissions: permissions,
 		},
 	})
 }
 
-// Register 处理注册请求（兼容 legacy users）
+// Register 处理注册请求（方案A：写入 sys_user）
 func Register(c *gin.Context) {
 	var req RegisterRequest
 	var err error
@@ -249,15 +206,9 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	var existingUser model.User
-	result := db.GetDB().Where("username = ?", req.Username).First(&existingUser)
-	if result.Error == nil {
+	var existingSys model.SysUser
+	if err := db.GetDB().Where("username = ?", req.Username).First(&existingSys).Error; err == nil {
 		c.JSON(http.StatusConflict, RegisterResponse{Code: 409, Message: "用户名已存在"})
-		return
-	}
-	result = db.GetDB().Where("email = ?", req.Email).First(&existingUser)
-	if result.Error == nil {
-		c.JSON(http.StatusConflict, RegisterResponse{Code: 409, Message: "邮箱已存在"})
 		return
 	}
 
@@ -267,13 +218,29 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	user := model.User{Username: req.Username, Password: string(hashedPassword), Email: req.Email}
-	if err := db.GetDB().Create(&user).Error; err != nil {
+	roleID := getDefaultRoleID()
+	if roleID == 0 {
+		c.JSON(http.StatusInternalServerError, RegisterResponse{Code: 500, Message: "默认角色初始化失败"})
+		return
+	}
+
+	sysUser := model.SysUser{
+		Username:     req.Username,
+		PasswordHash: string(hashedPassword),
+		RoleID:       roleID,
+		IsActive:     true,
+	}
+	if err := db.GetDB().Create(&sysUser).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, RegisterResponse{Code: 500, Message: "创建用户失败: " + err.Error()})
 		return
 	}
 
-	token, err := utils.GenerateToken(int(user.ID), user.Username)
+	if err := db.GetDB().Preload("Role").First(&sysUser, sysUser.ID).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, RegisterResponse{Code: 500, Message: "加载角色失败: " + err.Error()})
+		return
+	}
+
+	token, err := utils.GenerateToken(int(sysUser.ID), sysUser.Username)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, RegisterResponse{Code: 500, Message: "生成 token 失败: " + err.Error()})
 		return
@@ -284,11 +251,11 @@ func Register(c *gin.Context) {
 		Message: "注册成功",
 		Token:   token,
 		User: &UserInfo{
-			ID:          int(user.ID),
-			Username:    user.Username,
-			Email:       user.Email,
-			Role:        "普通用户",
-			Permissions: []string{"dashboard_view", "detection_single", "risks_view"},
+			ID:          int(sysUser.ID),
+			Username:    sysUser.Username,
+			Email:       req.Email,
+			Role:        sysUser.Role.RoleName,
+			Permissions: parseRolePermissions(sysUser.Role),
 		},
 	})
 }
@@ -302,49 +269,26 @@ func GetCurrentUser(c *gin.Context) {
 	}
 
 	var sysUser model.SysUser
-	if err := db.GetDB().Preload("Role").First(&sysUser, userID).Error; err == nil {
-		permissions := parseRolePermissions(sysUser.Role)
-		c.JSON(http.StatusOK, gin.H{
-			"code":    200,
-			"message": "获取用户信息成功",
-			"data": gin.H{
-				"id":          sysUser.ID,
-				"username":    sysUser.Username,
-				"role":        sysUser.Role.RoleName,
-				"permissions": permissions,
-			},
-			"user": gin.H{
-				"id":          sysUser.ID,
-				"username":    sysUser.Username,
-				"role":        sysUser.Role.RoleName,
-				"permissions": permissions,
-			},
-		})
-		return
-	}
-
-	// legacy fallback
-	var user model.User
-	if err := db.GetDB().First(&user, userID).Error; err != nil {
+	if err := db.GetDB().Preload("Role").First(&sysUser, userID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"code": 404, "message": "用户不存在"})
 		return
 	}
+
+	permissions := parseRolePermissions(sysUser.Role)
 	c.JSON(http.StatusOK, gin.H{
 		"code":    200,
 		"message": "获取用户信息成功",
 		"data": gin.H{
-			"id":          user.ID,
-			"username":    user.Username,
-			"email":       user.Email,
-			"role":        "普通用户",
-			"permissions": []string{"dashboard_view", "detection_single", "risks_view"},
+			"id":          sysUser.ID,
+			"username":    sysUser.Username,
+			"role":        sysUser.Role.RoleName,
+			"permissions": permissions,
 		},
 		"user": gin.H{
-			"id":          user.ID,
-			"username":    user.Username,
-			"email":       user.Email,
-			"role":        "普通用户",
-			"permissions": []string{"dashboard_view", "detection_single", "risks_view"},
+			"id":          sysUser.ID,
+			"username":    sysUser.Username,
+			"role":        sysUser.Role.RoleName,
+			"permissions": permissions,
 		},
 	})
 }

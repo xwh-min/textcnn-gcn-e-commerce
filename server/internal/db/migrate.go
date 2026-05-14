@@ -39,18 +39,9 @@ func MigrateDB() error {
 		}
 	}
 
-	// 迁移用户相关表（可能存在时间类型转换问题）
-	userTables := []interface{}{
-		&model.User{},
-		&model.UserQuery{},
-		&model.UserPhone{},
-	}
-
-	for _, table := range userTables {
-		if err := DB.AutoMigrate(table); err != nil {
-			log.Printf("Warning: failed to migrate user table %T: %v", table, err)
-			// 继续迁移其他表
-		}
+	// 迁移用户查询相关表（方案A：依赖 sys_user）
+	if err := DB.AutoMigrate(&model.UserQuery{}); err != nil {
+		log.Printf("Warning: failed to migrate user query table %T: %v", &model.UserQuery{}, err)
 	}
 
 	fmt.Println("Database migration completed with possible warnings")

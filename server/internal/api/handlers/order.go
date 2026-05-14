@@ -15,7 +15,9 @@ import (
 type CreateOrderRequest struct {
 	CompanyID         int64     `json:"company_id" binding:"required"`
 	OrderNo           string    `json:"order_no" binding:"required"`
-	OrderAmount       float64   `json:"order_amount" binding:"required,min=0"`
+	ProductName       string    `json:"product_name"`
+	Quantity          int       `json:"quantity"`
+	OrderAmount       float64   `json:"order_amount" binding:"required,min:0"`
 	Currency          string    `json:"currency"`
 	DestinationCountry string    `json:"destination_country"`
 	LogisticsProviderID int64     `json:"logistics_provider_id"`
@@ -26,6 +28,8 @@ type CreateOrderRequest struct {
 
 // UpdateOrderRequest 更新订单请求
 type UpdateOrderRequest struct {
+	ProductName       string    `json:"product_name"`
+	Quantity          int       `json:"quantity"`
 	OrderAmount       float64   `json:"order_amount"`
 	Currency          string    `json:"currency"`
 	DestinationCountry string    `json:"destination_country"`
@@ -39,6 +43,8 @@ type OrderResponse struct {
 	ID                 int64         `json:"id"`
 	CompanyID          int64         `json:"company_id"`
 	OrderNo            string        `json:"order_no"`
+	ProductName        string        `json:"product_name"`
+	Quantity           int           `json:"quantity"`
 	OrderAmount        float64       `json:"order_amount"`
 	Currency           string        `json:"currency"`
 	DestinationCountry string        `json:"destination_country"`
@@ -47,6 +53,8 @@ type OrderResponse struct {
 	PaymentStatus      string        `json:"payment_status"`
 	ExtraInfo          string        `json:"extra_info"`
 	CreatedAt          time.Time     `json:"created_at"`
+	CompanyName        string        `json:"company_name"`
+	Amount             float64       `json:"amount"`
 	// 关联的企业信息
 	Company            *CompanyInfo  `json:"company,omitempty"`
 	// 关联的物流商信息
@@ -133,15 +141,17 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	order := model.OrderData{
-		CompanyID:         req.CompanyID,
-		OrderNo:           req.OrderNo,
-		OrderAmount:       req.OrderAmount,
-		Currency:          req.Currency,
+		CompanyID:          req.CompanyID,
+		OrderNo:            req.OrderNo,
+		ProductName:        req.ProductName,
+		Quantity:           req.Quantity,
+		OrderAmount:        req.OrderAmount,
+		Currency:           req.Currency,
 		DestinationCountry: req.DestinationCountry,
 		LogisticsProviderID: req.LogisticsProviderID,
-		OrderDate:         req.OrderDate,
-		PaymentStatus:     req.PaymentStatus,
-		ExtraInfo:         req.ExtraInfo,
+		OrderDate:          req.OrderDate,
+		PaymentStatus:      req.PaymentStatus,
+		ExtraInfo:          req.ExtraInfo,
 	}
 
 	if err := db.GetDB().Create(&order).Error; err != nil {
@@ -229,15 +239,17 @@ func BatchImportOrders(c *gin.Context) {
 
 		// 创建订单
 		order := model.OrderData{
-			CompanyID:         orderReq.CompanyID,
-			OrderNo:           orderReq.OrderNo,
-			OrderAmount:       orderReq.OrderAmount,
-			Currency:          orderReq.Currency,
+			CompanyID:          orderReq.CompanyID,
+			OrderNo:            orderReq.OrderNo,
+			ProductName:        orderReq.ProductName,
+			Quantity:           orderReq.Quantity,
+			OrderAmount:        orderReq.OrderAmount,
+			Currency:           orderReq.Currency,
 			DestinationCountry: orderReq.DestinationCountry,
 			LogisticsProviderID: orderReq.LogisticsProviderID,
-			OrderDate:         orderReq.OrderDate,
-			PaymentStatus:     orderReq.PaymentStatus,
-			ExtraInfo:         orderReq.ExtraInfo,
+			OrderDate:          orderReq.OrderDate,
+			PaymentStatus:      orderReq.PaymentStatus,
+			ExtraInfo:          orderReq.ExtraInfo,
 		}
 
 		if err := tx.Create(&order).Error; err != nil {
@@ -406,6 +418,12 @@ func UpdateOrder(c *gin.Context) {
 	}
 
 	// 更新字段
+	if req.ProductName != "" {
+		order.ProductName = req.ProductName
+	}
+	if req.Quantity > 0 {
+		order.Quantity = req.Quantity
+	}
 	if req.OrderAmount > 0 {
 		order.OrderAmount = req.OrderAmount
 	}
@@ -467,6 +485,22 @@ func DeleteOrder(c *gin.Context) {
 		return
 	}
 
+	var order model.OrderData
+	if err := db.GetDB().First(&order, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":    404,
+				"message": "订单不存在",
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "获取订单失败",
+		})
+		return
+	}
+
 	if err := db.GetDB().Delete(&model.OrderData{}, id).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    500,
@@ -486,7 +520,10 @@ func orderToResponse(order *model.OrderData) *OrderResponse {
 		ID:                 order.ID,
 		CompanyID:          order.CompanyID,
 		OrderNo:            order.OrderNo,
+		ProductName:        order.ProductName,
+		Quantity:           order.Quantity,
 		OrderAmount:        order.OrderAmount,
+		Amount:             order.OrderAmount,
 		Currency:           order.Currency,
 		DestinationCountry: order.DestinationCountry,
 		LogisticsProviderID: order.LogisticsProviderID,
@@ -494,6 +531,7 @@ func orderToResponse(order *model.OrderData) *OrderResponse {
 		PaymentStatus:      order.PaymentStatus,
 		ExtraInfo:          order.ExtraInfo,
 		CreatedAt:          order.CreatedAt,
+		CompanyName:        "",
 	}
 }
 
@@ -504,6 +542,7 @@ func loadCompanyInfoForOrder(resp *OrderResponse) {
 	
 	var company model.EcoCompany
 	if err := db.GetDB().First(&company, resp.CompanyID).Error; err == nil {
+		resp.CompanyName = company.CompanyName
 		resp.Company = &CompanyInfo{
 			ID:          company.ID,
 			CompanyName: company.CompanyName,
